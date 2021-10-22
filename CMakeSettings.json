@@ -1,0 +1,32 @@
+﻿{
+  "environments": [
+    { "PATH_TO_WASI_SDK": "C:/wasi-sdk" },
+    { "BEAM_SHADER_SDK": "c:/Data/Projects/Beam/shader-sdk" }
+  ],
+  
+  "configurations": [
+    {
+      "name": "x64-Debug",
+      "generator": "Ninja",
+      "configurationType": "Debug",
+      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "buildRoot": "${projectDir}\\out\\build\\${name}",
+      "installRoot": "${projectDir}\\out\\install\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "",
+      "ctestCommandArgs": ""
+    },
+    {
+      "name": "wasm32-Release",
+      "generator": "Ninja",
+      "configurationType": "MinSizeRel",
+      "inheritEnvironments": [],
+      "buildRoot": "${projectDir}\\out\\build\\${name}",
+      "installRoot": "${projectDir}\\out\\install\\${name}",
+      "cmakeCommandArgs": "-DBEAM_SHADER_TESTS_ENABLED=Off -DBEAM_SHADER_SDK=${env.BEAM_SHADER_SDK}  -DCMAKE_SYSROOT=${env.PATH_TO_WASI_SDK}/share/wasi-sysroot -DWASI_SDK_PREFIX=${env.PATH_TO_WASI_SDK} -DCMAKE_CXX_COMPILER_FORCED=True -DCMAKE_C_COMPILER_FORCED=True",
+      "buildCommandArgs": "-v",
+      "ctestCommandArgs": "",
+      "cmakeToolchain": "${env.PATH_TO_WASI_SDK}/share/cmake/wasi-sdk.cmake"
+    }
+  ]
+}
