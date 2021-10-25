@@ -1,21 +1,21 @@
 #pragma once
 
 #include <cstddef>
-#include <string>
+
 #include <string_view>
 #include <vector>
 #include <algorithm>
 
 /// YAS
 #define _LITTLE_ENDIAN
-#include "exception_base.hpp" 
+#include "exception_base.hpp" // hack
 #define __YAS_THROW_EXCEPTION(type, msg) Env::Halt();
 #include <yas/serialize.hpp>
 #include <yas/std_types.hpp>
 
 /// YAS
 
-namespace testyas {
+namespace SerializationSample {
 
     template<class T>
     const T& mymin(const T& a, const T& b)

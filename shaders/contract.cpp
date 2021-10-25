@@ -3,7 +3,7 @@
 #include "Shaders/Math.h"
 #include "contract.h"
 
-using namespace testyas;
+using namespace SerializationSample;
 
 BEAM_EXPORT void Ctor(Buffer& paramsBuffer)
 {

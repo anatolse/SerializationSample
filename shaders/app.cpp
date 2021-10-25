@@ -7,7 +7,7 @@
 #include <utility>
 #include <string_view>
 
-namespace testyas
+namespace SerializationSample
 {
 #include "contract_sid.i"
 }
@@ -36,8 +36,8 @@ auto find_if_contains(const std::string_view str, const std::vector<std::pair<st
 
 void On_action_create_contract(const ContractID& unused)
 {
-	using namespace testyas;
-	testyas::InitialParams params;
+	using namespace SerializationSample;
+	SerializationSample::InitialParams params;
 	//params.name = "Test name";
 	params.anotherName = "literal";
 	params.health = 589;
@@ -57,17 +57,17 @@ void On_action_create_contract(const ContractID& unused)
 	ar& params;
 
 
-	Env::GenerateKernel(nullptr, testyas::InitialParams::METHOD, buf, paramSize, nullptr, 0, nullptr, 0, "Create testyas contract", 0);
+	Env::GenerateKernel(nullptr, SerializationSample::InitialParams::METHOD, buf, paramSize, nullptr, 0, nullptr, 0, "Create SerializationSample contract", 0);
 }
 
 void On_action_destroy_contract(const ContractID& cid)
 {
-	Env::GenerateKernel(&cid, 1, nullptr, 0, nullptr, 0, nullptr, 0, "Destroy testyas contract", 0);
+	Env::GenerateKernel(&cid, 1, nullptr, 0, nullptr, 0, nullptr, 0, "Destroy SerializationSample contract", 0);
 }
 
 void On_action_view_contracts(const ContractID& unused)
 {
-	EnumAndDumpContracts(testyas::s_SID);
+	EnumAndDumpContracts(SerializationSample::s_SID);
 }
 
 void On_action_view_contract_params(const ContractID& cid)
@@ -76,7 +76,7 @@ void On_action_view_contract_params(const ContractID& cid)
 	k.m_Prefix.m_Cid = cid;
 	k.m_KeyInContract = 0;
 
-	testyas::InitialParams params;
+	SerializationSample::InitialParams params;
 	if (!Env::VarReader::Read_T(k, params))
 		return On_error("Failed to read contract's initial params");
 
