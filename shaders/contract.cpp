@@ -13,7 +13,7 @@ BEAM_EXPORT void Ctor(Buffer& paramsBuffer)
 
 	iar& *params;
 
-	Env::SaveVar_T(0, params->anotherName);
+	Env::SaveVar_T(0, *params);
 }
 
 BEAM_EXPORT void Dtor(void*)
