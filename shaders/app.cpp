@@ -7,6 +7,11 @@
 #include <utility>
 #include <string_view>
 
+namespace testyas
+{
+#include "contract_sid.i"
+}
+
 using Action_func_t = void (*)(const ContractID&);
 using Actions_map_t = std::vector<std::pair<std::string_view, Action_func_t>>;
 using Roles_map_t = std::vector<std::pair<std::string_view, const Actions_map_t&>>;
@@ -31,19 +36,38 @@ auto find_if_contains(const std::string_view str, const std::vector<std::pair<st
 
 void On_action_create_contract(const ContractID& unused)
 {
-	testyass::InitialParams params;
+	using namespace testyas;
+	testyas::InitialParams params;
+	//params.name = "Test name";
+	params.anotherName = "literal";
+	params.health = 589;
+	params.attributes = { "test", "3", "wertyuiop[ " };
 
-	Env::GenerateKernel(nullptr, testyass::InitialParams::METHOD, &params, sizeof(params), nullptr, 0, nullptr, 0, "Create testyass contract", 0);
+	CountStream cs;
+	yas::binary_oarchive<CountStream, YAS_FLAGS> sizeCalc(cs);
+	sizeCalc& params;
+
+	auto paramSize = sizeof(Buffer) + cs.m_size;
+	std::vector<char> v(paramSize, '\0');
+	Buffer* buf = reinterpret_cast<Buffer*>(v.data());
+	buf->size = cs.m_size;
+
+	MemStream ms(buf->data, buf->size);
+	yas::binary_oarchive<MemStream, YAS_FLAGS> ar(ms);
+	ar& params;
+
+
+	Env::GenerateKernel(nullptr, testyas::InitialParams::METHOD, buf, paramSize, nullptr, 0, nullptr, 0, "Create testyas contract", 0);
 }
 
 void On_action_destroy_contract(const ContractID& cid)
 {
-	Env::GenerateKernel(&cid, 1, nullptr, 0, nullptr, 0, nullptr, 0, "Destroy testyass contract", 0);
+	Env::GenerateKernel(&cid, 1, nullptr, 0, nullptr, 0, nullptr, 0, "Destroy testyas contract", 0);
 }
 
 void On_action_view_contracts(const ContractID& unused)
 {
-	EnumAndDumpContracts(testyass::s_SID);
+	EnumAndDumpContracts(testyas::s_SID);
 }
 
 void On_action_view_contract_params(const ContractID& cid)
@@ -52,7 +76,7 @@ void On_action_view_contract_params(const ContractID& cid)
 	k.m_Prefix.m_Cid = cid;
 	k.m_KeyInContract = 0;
 
-	testyass::InitialParams params;
+	testyas::InitialParams params;
 	if (!Env::VarReader::Read_T(k, params))
 		return On_error("Failed to read contract's initial params");
 

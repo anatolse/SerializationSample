@@ -3,9 +3,17 @@
 #include "Shaders/Math.h"
 #include "contract.h"
 
-BEAM_EXPORT void Ctor(testyass::InitialParams& params)
+using namespace testyas;
+
+BEAM_EXPORT void Ctor(Buffer& paramsBuffer)
 {
-	Env::SaveVar_T(0, params);
+	InitialParams* params = static_cast<InitialParams*>(Env::StackAlloc(paramsBuffer.size));
+	MemStream ms(paramsBuffer.data, paramsBuffer.size);
+	yas::binary_iarchive<MemStream, YAS_FLAGS> iar(ms);
+
+	iar& *params;
+
+	Env::SaveVar_T(0, params->anotherName);
 }
 
 BEAM_EXPORT void Dtor(void*)
