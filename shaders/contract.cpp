@@ -7,13 +7,13 @@ using namespace SerializationSample;
 
 BEAM_EXPORT void Ctor(Buffer& paramsBuffer)
 {
-	InitialParams* params = static_cast<InitialParams*>(Env::StackAlloc(paramsBuffer.size));
+	InitialParams params;
 	MemStream ms(paramsBuffer.data, paramsBuffer.size);
 	yas::binary_iarchive<MemStream, YAS_FLAGS> iar(ms);
 
-	iar& *params;
+	iar& params;
 
-	Env::SaveVar_T(0, *params);
+	Env::SaveVar_T(0, params);
 }
 
 BEAM_EXPORT void Dtor(void*)
