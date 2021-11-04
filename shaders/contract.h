@@ -87,7 +87,7 @@ namespace SerializationSample {
 
     };
 
-    constexpr size_t YAS_FLAGS = yas::mem | yas::binary | yas::compacted | yas::no_header;
+    constexpr size_t YAS_FLAGS = yas::binary | yas::no_header | yas::elittle | yas::compacted;
 
 #pragma pack(push, 1)
 
@@ -126,7 +126,7 @@ namespace SerializationSample {
 		//std::string name;
 		std::string anotherName;
 		std::vector<Attribute> attributes;
-        size_t health;
+        uint32_t health;
 
         bool operator==(const InitialParams& other) const
         {

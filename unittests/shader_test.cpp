@@ -164,12 +164,16 @@ namespace beam {
 			buf->size = cs.m_size;
 			InitialParams tt;
 			MemStream ms(buf->data, buf->size);
+			yas::mem_ostream yms2(buf->data, buf->size);
 			yas::binary_oarchive<MemStream, YAS_FLAGS> ar(ms);
-			ar& t;
+			yas::binary_oarchive<yas::mem_ostream, YAS_FLAGS> ar2(yms2);
+			ar2& t;
 			MemStream ms2(buf->data, buf->size);
 			yas::binary_iarchive<MemStream, YAS_FLAGS> iar(ms2);
+			yas::mem_istream yms(buf->data, buf->size);
+			yas::binary_iarchive<yas::mem_istream, YAS_FLAGS> iar2(yms);
 
-			iar& tt;
+			iar2& tt;
 			verify_test(tt == t);
 
 			AddCode(m_Code.m_Contract, "../shaders/shaders/contract.wasm");
