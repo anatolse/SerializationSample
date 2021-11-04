@@ -41,7 +41,13 @@ void On_action_create_contract(const ContractID& unused)
 	//params.name = "Test name";
 	params.anotherName = "literal";
 	params.health = 589;
-	params.attributes = { "test", "3", "wertyuiop[ " };
+	params.attributes = 
+	{
+		{1, "test", "desk"},
+		{3, "test", "desk f dfd fd dfdfdf"},
+		{4, "trfe er erest", "desf k"},
+		{1, "tes333t", "dessssssssssssssssk"},
+	};
 
 	CountStream cs;
 	yas::binary_oarchive<CountStream, YAS_FLAGS> sizeCalc(cs);

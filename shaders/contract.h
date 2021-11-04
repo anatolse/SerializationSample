@@ -4,7 +4,7 @@
 
 #include <cstddef>
 
-#include <string_view>
+#include <string>
 #include <vector>
 #include <algorithm>
 
@@ -97,13 +97,43 @@ namespace SerializationSample {
         char data[0];
     };
 
-	struct InitialParams {
+	struct InitialParams 
+    {
 		static const uint32_t METHOD = 0;
         
+        struct Attribute
+        {
+            int type;
+            std::string name;
+            std::string description;
+            bool operator==(const Attribute& other) const
+            {
+                return type == other.type
+                    && name == other.name
+                    && description == other.description;
+            }
+            template<typename Ar>
+            void serialize(Ar& ar)
+            {
+                ar
+                    & type
+                    & name
+                    & description
+                    ;
+            }
+        };
+
 		//std::string name;
-		std::string_view anotherName;
-		std::vector<std::string_view> attributes;
+		std::string anotherName;
+		std::vector<Attribute> attributes;
         size_t health;
+
+        bool operator==(const InitialParams& other) const
+        {
+            return anotherName == other.anotherName
+                && attributes == other.attributes
+                && health == other.health;
+        }
 		template<typename Ar>
 		void serialize(Ar& ar) 
 		{
@@ -116,24 +146,6 @@ namespace SerializationSample {
 		}
 	};
 
-    struct InitialParams2 {
-        static const uint32_t METHOD = 0;
-        using String32 = std::array<uint8_t, 32>;
-        //std::string name;
-        String32 anotherName;
-        std::vector<String32> attributes;
-        size_t health;
-        template<typename Ar>
-        void serialize(Ar& ar)
-        {
-            ar
-                //& name
-                & anotherName
-                & attributes
-                & health
-                ;
-        }
-    };
 
 #pragma pack(pop)
 }

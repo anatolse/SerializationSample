@@ -19,7 +19,7 @@
 #include <cmath>
 #include <cstddef>
 
-#include <string_view>
+#include <string>
 #include <vector>
 #include <algorithm>
 
@@ -144,9 +144,15 @@ namespace beam {
 		{
 			using namespace Shaders::SerializationSample;
 			InitialParams t;
-			t.health= 145;
-			//t.anotherName = "rer";
-			//t.attributes = { "ewe", "vv", "ddddddddddddd" };
+			t.health= 1450;
+			t.anotherName = "rer";
+			t.attributes  = 
+			{
+				//{1, "test", "desk"},
+				//{3, "test", "desk f dfd fd dfdfdf"},
+				//{4, "trfe er erest", "desf k"},
+				//{1, "tes333t", "dessssssssssssssssk"},
+			};
 			
 			CountStream cs;
 			yas::binary_oarchive<CountStream, YAS_FLAGS> sizeCalc(cs);
@@ -164,7 +170,7 @@ namespace beam {
 			yas::binary_iarchive<MemStream, YAS_FLAGS> iar(ms2);
 
 			iar& tt;
-			//verify_test(tt == t);
+			verify_test(tt == t);
 
 			AddCode(m_Code.m_Contract, "../shaders/shaders/contract.wasm");
 
