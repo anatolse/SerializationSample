@@ -17,6 +17,11 @@
 #include "../beam/core/block_rw.h"
 #include "../beam/bvm/bvm2_impl.h"
 #include <cmath>
+#include <cstddef>
+
+#include <string_view>
+#include <vector>
+#include <algorithm>
 
 namespace Shaders {
 
@@ -27,6 +32,18 @@ namespace Shaders {
 #define BEAM_EXPORT
 
 #include "Shaders/common.h"
+}
+
+/// YAS
+//#define _LITTLE_ENDIAN
+#include "../shaders/exception_base.hpp" // hack
+#define __YAS_THROW_EXCEPTION(type, msg) Shaders::Env::Halt();
+#include <yas/serialize.hpp>
+#include <yas/std_types.hpp>
+
+/// YAS
+
+namespace Shaders {
 
 #include "../shaders/contract.h"
 
@@ -123,9 +140,32 @@ namespace beam {
 			}
 		};
 
-
 		void MyProcessor::TestAll()
 		{
+			using namespace Shaders::SerializationSample;
+			InitialParams t;
+			t.health= 145;
+			//t.anotherName = "rer";
+			//t.attributes = { "ewe", "vv", "ddddddddddddd" };
+			
+			CountStream cs;
+			yas::binary_oarchive<CountStream, YAS_FLAGS> sizeCalc(cs);
+			sizeCalc& t;
+
+			auto paramSize = sizeof(Buffer) + cs.m_size;
+			std::vector<char> v(paramSize, '\0');
+			auto* buf = reinterpret_cast<Buffer* > (v.data());
+			buf->size = cs.m_size;
+			InitialParams tt;
+			MemStream ms(buf->data, buf->size);
+			yas::binary_oarchive<MemStream, YAS_FLAGS> ar(ms);
+			ar& t;
+			MemStream ms2(buf->data, buf->size);
+			yas::binary_iarchive<MemStream, YAS_FLAGS> iar(ms2);
+
+			iar& tt;
+			//verify_test(tt == t);
+
 			AddCode(m_Code.m_Contract, "../shaders/shaders/contract.wasm");
 
 			TestContract();

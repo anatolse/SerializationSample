@@ -14,6 +14,7 @@ include_directories(${BEAM_SHADER_SDK}/beam/bvm)
 message(STATUS "CMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME}")
 include(ShaderTools)
 include_directories(3rdparty/yas/include)
+
 if(CMAKE_SYSTEM_NAME MATCHES "WASI")
     #include(GenerateSID)
 
@@ -26,6 +27,9 @@ if(CMAKE_SYSTEM_NAME MATCHES "WASI")
 
     add_subdirectory(shaders)
 else()
+    if (MSVC)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Zc:__cplusplus")
+    endif()
     set(beam_SOURCE_DIR ${BEAM_SHADER_SDK}/beam)
     include(AddTest)
     include(Bvm)

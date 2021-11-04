@@ -1,5 +1,7 @@
 #pragma once
 
+#ifndef HOST_BUILD
+
 #include <cstddef>
 
 #include <string_view>
@@ -14,6 +16,8 @@
 #include <yas/std_types.hpp>
 
 /// YAS
+
+#endif
 
 namespace SerializationSample {
 
@@ -111,6 +115,25 @@ namespace SerializationSample {
                 ;
 		}
 	};
+
+    struct InitialParams2 {
+        static const uint32_t METHOD = 0;
+        using String32 = std::array<uint8_t, 32>;
+        //std::string name;
+        String32 anotherName;
+        std::vector<String32> attributes;
+        size_t health;
+        template<typename Ar>
+        void serialize(Ar& ar)
+        {
+            ar
+                //& name
+                & anotherName
+                & attributes
+                & health
+                ;
+        }
+    };
 
 #pragma pack(pop)
 }
