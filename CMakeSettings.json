@@ -1,6 +1,6 @@
 ﻿{
   "environments": [
-    { "PATH_TO_WASI_SDK": "C:/wasi-sdk" },
+    { "WASI_SDK_PREFIX": "C:/wasi-sdk" },
     { "BEAM_SHADER_SDK": "c:/Data/Projects/Beam/shader-sdk" }
   ],
   
@@ -23,10 +23,10 @@
       "inheritEnvironments": [],
       "buildRoot": "${projectDir}\\out\\build\\${name}",
       "installRoot": "${projectDir}\\out\\install\\${name}",
-      "cmakeCommandArgs": "-DBEAM_SHADER_TESTS_ENABLED=Off -DBEAM_SHADER_SDK=${env.BEAM_SHADER_SDK}  -DCMAKE_SYSROOT=${env.PATH_TO_WASI_SDK}/share/wasi-sysroot -DWASI_SDK_PREFIX=${env.PATH_TO_WASI_SDK} -DCMAKE_CXX_COMPILER_FORCED=True -DCMAKE_C_COMPILER_FORCED=True",
+      "cmakeCommandArgs": "-DBEAM_SHADER_TESTS_ENABLED=Off -DBEAM_SHADER_SDK=${env.BEAM_SHADER_SDK}  -DCMAKE_SYSROOT=${env.WASI_SDK_PREFIX}/share/wasi-sysroot -DWASI_SDK_PREFIX=${env.WASI_SDK_PREFIX} -DCMAKE_CXX_COMPILER_FORCED=True -DCMAKE_C_COMPILER_FORCED=True",
       "buildCommandArgs": "-v",
       "ctestCommandArgs": "",
-      "cmakeToolchain": "${env.PATH_TO_WASI_SDK}/share/cmake/wasi-sdk.cmake"
+      "cmakeToolchain": "${env.WASI_SDK_PREFIX}/share/cmake/wasi-sdk.cmake"
     }
   ]
 }
