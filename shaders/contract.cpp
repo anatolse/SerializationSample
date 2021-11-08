@@ -7,6 +7,12 @@ using namespace SerializationSample;
 
 BEAM_EXPORT void Ctor(Buffer& paramsBuffer)
 {
+	using Str = std::vector<char>;
+	Str tst;
+	for (int i = 0; i < 1000; ++i)
+	{
+		tst.push_back('g');
+	}
 	InitialParams params;
 	MemStream ms(paramsBuffer.data, paramsBuffer.size);
 	yas::binary_iarchive<MemStream, YAS_FLAGS> iar(ms);

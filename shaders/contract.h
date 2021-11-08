@@ -110,7 +110,8 @@ namespace SerializationSample {
             {
                 return type == other.type
                     && name == other.name
-                    && description == other.description;
+                    && description == other.description
+                    ;
             }
             template<typename Ar>
             void serialize(Ar& ar)
@@ -132,7 +133,9 @@ namespace SerializationSample {
         {
             return anotherName == other.anotherName
                 && attributes == other.attributes
-                && health == other.health;
+                && 
+                health == other.health
+                ;
         }
 		template<typename Ar>
 		void serialize(Ar& ar) 
